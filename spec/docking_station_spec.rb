@@ -30,12 +30,9 @@ describe DockingStation do
         end
 
         it 'does not allow broken bikes to be released' do
-            working_bike = Bike.new
-            broken_bike = Bike.new
-            broken_bike.report_broken
-            subject.dock_bike(working_bike)
-            subject.dock_bike(broken_bike)
-            expect(subject.release_bike).to eq working_bike 
+            subject.dock_bike(double(:working_bike.report_broken))
+            subject.dock_bike(double(:working_bike))
+            expect(subject.release_bike).to eq :working_bike 
         end
     end
 
@@ -49,14 +46,13 @@ describe DockingStation do
         end
 
         it 'returns docked bike' do
-            bike = Bike.new
-            subject.dock_bike(bike)
-            expect(subject.bikes_array).to include bike
+            subject.dock_bike(double(:working_bike))
+            expect(subject.bikes_array).to include #<Double :working_bike>
         end
         
         it 'rarises an error when there are more than 20 bikes in the docking station' do
             new_station = DockingStation.new
-            new_station.capacity.times { new_station.dock_bike Bike.new }
+            new_station.capacity.times { new_station.dock_bike(double(:working_bike)) }
             expect { new_station.dock_bike Bike.new }.to raise_error 'Docking station full' 
         end
     end
