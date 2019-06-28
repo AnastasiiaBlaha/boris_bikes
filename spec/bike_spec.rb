@@ -1,7 +1,11 @@
 require 'bike'
 
 describe Bike do
-    it 'checks whether the bike is working' do
-        expect(subject.working?).to eq true
+
+    describe '#report_broken' do
+        it 'can be reported as broken' do
+            subject.report_broken
+            expect(subject).to be_broken
+        end
     end
 end
